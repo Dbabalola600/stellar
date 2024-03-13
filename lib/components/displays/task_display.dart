@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../pages/edit_task_page.dart';
+import '../../requests/task_request.dart';
 import '../../utils/colors.dart';
 
 class Props {
@@ -10,8 +11,13 @@ class Props {
   final String content;
 
   final bool isComplete;
+  final dynamic? id;
 
-  Props({required this.title, required this.content, required this.isComplete});
+  Props(
+      {required this.title,
+      required this.content,
+      required this.isComplete,
+      this.id});
 }
 
 class TaskDisplay extends StatefulWidget {
@@ -23,6 +29,34 @@ class TaskDisplay extends StatefulWidget {
 }
 
 class _TaskDisplayState extends State<TaskDisplay> {
+  bool _isLoading = false;
+
+  void deleteTask() async {
+    setState(() {
+      _isLoading = true;
+    });
+    // print(widget.props.id);
+
+    var response = await deleteOne(id: widget.props.id);
+
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  void completeTask() async {
+    setState(() {
+      _isLoading = true;
+    });
+    print(widget.props.id);
+
+    var response = await markCompleted(widget.props.id);
+
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -34,7 +68,7 @@ class _TaskDisplayState extends State<TaskDisplay> {
             padding: const EdgeInsets.all(15),
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                 bottomLeft: Radius.circular(10),
                 bottomRight: Radius.circular(10),
                 topLeft: Radius.circular(10),
@@ -45,11 +79,11 @@ class _TaskDisplayState extends State<TaskDisplay> {
                   color: Colors.grey.withOpacity(0.5),
                   spreadRadius: 5,
                   blurRadius: 7,
-                  offset: Offset(0, 3),
+                  offset: const Offset(0, 3),
                 )
               ],
             ),
-            margin: const EdgeInsets.only(bottom: 2),
+            margin: const EdgeInsets.only(bottom: 20),
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -59,7 +93,7 @@ class _TaskDisplayState extends State<TaskDisplay> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          widget.props.title,
+                          _isLoading ? "Loading..." : widget.props.title,
                           style: const TextStyle(
                             color: primaryColor,
                             fontSize: 15.0,
@@ -83,7 +117,8 @@ class _TaskDisplayState extends State<TaskDisplay> {
                                     Icons.mode_edit_outline_outlined,
                                     color: primaryColor,
                                   ),
-                                  onPressed: () => Get.to(EditTaskPage())),
+                                  onPressed: () =>
+                                      Get.to(EditTaskPage(widget.props.id, widget.props.title, widget.props.content))),
 
                               //delete
                               IconButton(
@@ -91,9 +126,7 @@ class _TaskDisplayState extends State<TaskDisplay> {
                                   Icons.delete_outline_outlined,
                                   color: primaryColor,
                                 ),
-                                onPressed: () {
-                                  // Put your code here
-                                },
+                                onPressed: () => deleteTask(),
                               ),
 //mark completed
                               IconButton(
@@ -101,9 +134,7 @@ class _TaskDisplayState extends State<TaskDisplay> {
                                   Icons.check_circle_outline,
                                   color: primaryColor,
                                 ),
-                                onPressed: () {
-                                  // Put your code here
-                                },
+                                onPressed: () => completeTask(),
                               ),
                             ],
                           ),

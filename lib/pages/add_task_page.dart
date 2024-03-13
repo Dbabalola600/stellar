@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 
+import '../components/displays/app_alert_dialogue.dart';
 import '../components/displays/app_button.dart';
 import '../components/displays/back_appbar.dart';
+import '../requests/task_request.dart';
 import '../utils/colors.dart';
+import 'home_screen_page.dart';
 
 class NewTaskPage extends StatefulWidget {
   const NewTaskPage({Key? key}) : super(key: key);
@@ -20,6 +23,53 @@ class _NewTaskPageState extends State<NewTaskPage> {
   bool _isLoading = false;
 
   bool showError = false;
+
+  void showLoginErrorDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AppAlertDialogue(
+          title: 'Error ',
+          content: 'unknown erro',
+          contentColor: primaryColor,
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+                setState(() {
+                  showError = false; // Set showError to false when closing
+                });
+              },
+              child: Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void createNew() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    var response =
+        await newTask(titleTextController.text, contentTextController.text);
+    if (response["status"] == 200) {
+
+      // Get.to(const HomePage());
+       Get.back();
+    } else {
+      setState(() {
+        showError = true;
+      });
+      // ignore: use_build_context_synchronously
+      showLoginErrorDialog(context);
+    }
+    setState(() {
+      _isLoading = false;
+    });
+  }
 
   void isTextFieldBlankValidation() {
     if (titleTextController.text.isEmpty ||
@@ -37,7 +87,7 @@ class _NewTaskPageState extends State<NewTaskPage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-        onWillPop: () => Future.value(false),
+        onWillPop: () async => false,
         child: Scaffold(
           appBar: backButtonAppbar("Add Task", primaryColor),
           body: SafeArea(
@@ -62,8 +112,8 @@ class _NewTaskPageState extends State<NewTaskPage> {
                           ),
                           controller: titleTextController,
                           onChanged: (text) {
-                          isTextFieldBlankValidation();
-                        },
+                            isTextFieldBlankValidation();
+                          },
                         ),
                         TextFormField(
                           decoration: const InputDecoration(
@@ -71,10 +121,9 @@ class _NewTaskPageState extends State<NewTaskPage> {
                             labelText: 'Detail',
                           ),
                           controller: contentTextController,
-
                           onChanged: (text) {
-                          isTextFieldBlankValidation();
-                        },
+                            isTextFieldBlankValidation();
+                          },
                         ),
                         const SizedBox(
                           height: 30,
@@ -88,9 +137,8 @@ class _NewTaskPageState extends State<NewTaskPage> {
                         AppButton(
                           buttonColour: primaryColor,
                           text: _isLoading ? "Loading..." : "Add",
-                          onPress: ()=>{},
+                          onPress: createNew,
                           isDisabled: isButtonDisabled,
-
                         ),
                         const SizedBox(
                           height: 20,

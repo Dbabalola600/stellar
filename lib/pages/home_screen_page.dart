@@ -3,8 +3,11 @@ import 'package:get/get.dart';
 
 import '../components/displays/task_display.dart';
 import '../components/navigation/bottom_navbar.dart';
+
+import '../requests/task_request.dart';
 import '../utils/colors.dart';
 import 'add_task_page.dart';
+import 'dart:async';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -12,14 +15,73 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageSate();
 }
 
+class Tasks {
+  final dynamic title;
+
+  final dynamic content;
+
+  final dynamic id;
+
+  Tasks({required this.title, required this.content, required this.id});
+}
+
 class _HomePageSate extends State<HomePage> {
   int _currentIndex = 0;
+  bool _isLoading = false;
+  Timer? _timer;
+  List<Tasks> taskList = [];
+  List<Map<String, String>> taskData = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _startTimer();
+  }
+
+  void _startTimer() {
+    _timer =
+        Timer.periodic(const Duration(seconds: 2), (Timer t) => showInfo());
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  Future<void> showInfo() async {
+    setState(() {
+      _isLoading = true;
+    });
+    var response = await getAll();
+
+    if (response != null) {
+      // ignore: avoid_print
+
+      var resData = response;
+
+      taskList = (resData as List).map((task) {
+        return Tasks(
+          id: task["_id"],
+          content: task["content"],
+          title: task["title"],
+        );
+      }).toList();
+      // print(taskList);
+    }
+
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     int dayNum = (DateTime.now().day);
 
     return WillPopScope(
-      onWillPop: () => Future.value(false),
+      // onWillPop: () => Future.value(false),
+      onWillPop: () async => false,
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: primaryColor,
@@ -92,8 +154,8 @@ class _HomePageSate extends State<HomePage> {
             Align(
               alignment: Alignment.centerRight,
               child: InkWell(
-                onTap: () {},
-                child:const Padding(
+                onTap: () =>showInfo(),
+                child: const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   child: Text(
                     "Refresh",
@@ -103,11 +165,18 @@ class _HomePageSate extends State<HomePage> {
                 ),
               ),
             ),
-            TaskDisplay(
+
+            ...taskList.map((tasks) => 
+            (
+              TaskDisplay(
                 props: Props(
-                    content: "TODO CONTENT",
-                    title: "TODO TITLE",
+                    content: tasks.content,
+                    title: tasks.title,
+                    id: tasks.id,
                     isComplete: false))
+            )
+            ),
+            
           ],
         )),
       ),
