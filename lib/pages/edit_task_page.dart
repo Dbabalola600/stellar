@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-
 import '../components/displays/app_button.dart';
 import '../components/displays/back_appbar.dart';
 import '../utils/colors.dart';
 
-class NewTaskPage extends StatefulWidget {
-  const NewTaskPage({Key? key}) : super(key: key);
+class EditTaskPage extends StatefulWidget {
+  const EditTaskPage({Key? key}) : super(key: key);
   @override
-  State<NewTaskPage> createState() => _NewTaskPageState();
+  State<EditTaskPage> createState() => _EditTaskPageState();
 }
 
-class _NewTaskPageState extends State<NewTaskPage> {
+class _EditTaskPageState extends State<EditTaskPage> {
   final titleTextController = TextEditingController();
   final contentTextController = TextEditingController();
 
@@ -39,7 +38,7 @@ class _NewTaskPageState extends State<NewTaskPage> {
     return WillPopScope(
         onWillPop: () => Future.value(false),
         child: Scaffold(
-          appBar: backButtonAppbar("Add Task", primaryColor),
+          appBar: backButtonAppbar("Edit Task", primaryColor),
           body: SafeArea(
               child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
@@ -62,8 +61,8 @@ class _NewTaskPageState extends State<NewTaskPage> {
                           ),
                           controller: titleTextController,
                           onChanged: (text) {
-                          isTextFieldBlankValidation();
-                        },
+                            isTextFieldBlankValidation();
+                          },
                         ),
                         TextFormField(
                           decoration: const InputDecoration(
@@ -71,10 +70,10 @@ class _NewTaskPageState extends State<NewTaskPage> {
                             labelText: 'Detail',
                           ),
                           controller: contentTextController,
-
+                          
                           onChanged: (text) {
-                          isTextFieldBlankValidation();
-                        },
+                            isTextFieldBlankValidation();
+                          },
                         ),
                         const SizedBox(
                           height: 30,
@@ -88,9 +87,8 @@ class _NewTaskPageState extends State<NewTaskPage> {
                         AppButton(
                           buttonColour: primaryColor,
                           text: _isLoading ? "Loading..." : "Add",
-                          onPress: ()=>{},
+                          onPress: () => {},
                           isDisabled: isButtonDisabled,
-
                         ),
                         const SizedBox(
                           height: 20,

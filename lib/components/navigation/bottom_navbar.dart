@@ -2,8 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:stellar_eminence/pages/home_screen_page.dart';
 
+
+import '../../pages/completed_screen_page.dart';
+import '../../pages/home_screen_page.dart';
 import '../../utils/colors.dart';
 
 class CustomBottomNavigationBar extends StatefulWidget {
@@ -31,8 +33,12 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
       onTap: (index) {
         switch (index) {
           case 0:
-            Get.to(const HomePage()); // Navigate to the home page
+            Get.to(const HomePage()); 
             break;
+             case 1:
+            Get.to(const CompletedPage()); // Navigate to the home page
+            break;
+
         }
       },
       items: const [

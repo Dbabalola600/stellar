@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:stellar_eminence/utils/colors.dart';
+
+import '../../utils/colors.dart';
+
 
 class AppButton extends StatefulWidget {
   AppButton(

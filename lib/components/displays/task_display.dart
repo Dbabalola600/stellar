@@ -1,7 +1,8 @@
-
-
 import 'package:flutter/material.dart';
-import 'package:stellar_eminence/utils/colors.dart';
+import 'package:get/get.dart';
+
+import '../../pages/edit_task_page.dart';
+import '../../utils/colors.dart';
 
 class Props {
   final String title;
@@ -10,11 +11,7 @@ class Props {
 
   final bool isComplete;
 
-  Props({
-    required this.title,
-    required this.content,
-    required this.isComplete
-  });
+  Props({required this.title, required this.content, required this.isComplete});
 }
 
 class TaskDisplay extends StatefulWidget {
@@ -73,51 +70,45 @@ class _TaskDisplayState extends State<TaskDisplay> {
                       ],
                     ),
                   ),
+                  widget.props.isComplete == false
+                      ? Container(
+                          margin: const EdgeInsets.all(3),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // edit
 
-                  widget.props.isComplete == false ?  
-                  Container(
-                    margin: const EdgeInsets.all(3),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // edit
-                        IconButton(
-                          icon: const Icon(
-                            Icons.mode_edit_outline_outlined,
-                            color: primaryColor,
-                          ),
-                          onPressed: () {
-                            // Put your code here
-                          },
-                        ),
-                        IconButton(
-                          icon: const Icon(
-                            Icons.delete_outline_outlined,
-                            color: primaryColor,
-                          ),
-                          onPressed: () {
-                            // Put your code here
-                          },
-                        ),
+                              IconButton(
+                                  icon: const Icon(
+                                    Icons.mode_edit_outline_outlined,
+                                    color: primaryColor,
+                                  ),
+                                  onPressed: () => Get.to(EditTaskPage())),
 
-                        IconButton(
-                          icon: const Icon(
-                            Icons.check_circle_outline,
-                            color: primaryColor,
+                              //delete
+                              IconButton(
+                                icon: const Icon(
+                                  Icons.delete_outline_outlined,
+                                  color: primaryColor,
+                                ),
+                                onPressed: () {
+                                  // Put your code here
+                                },
+                              ),
+//mark completed
+                              IconButton(
+                                icon: const Icon(
+                                  Icons.check_circle_outline,
+                                  color: primaryColor,
+                                ),
+                                onPressed: () {
+                                  // Put your code here
+                                },
+                              ),
+                            ],
                           ),
-                          onPressed: () {
-                            // Put your code here
-                          },
-                        ),
-                      ],
-                    ),
-                  )
-                  
-                  
-                  :
-
-                Container(),
-                  
+                        )
+                      : Container(),
                 ]),
           )
         ]),

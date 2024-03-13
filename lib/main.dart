@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
-import 'package:stellar_eminence/pages/home_screen_page.dart';
+
+import 'pages/home_screen_page.dart';
+
 
 void main() {
   runApp(const MyApp());

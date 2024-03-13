@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:stellar_eminence/components/displays/task_display.dart';
-import 'package:stellar_eminence/pages/add_task_page.dart';
 
+import '../components/displays/task_display.dart';
 import '../components/navigation/bottom_navbar.dart';
 import '../utils/colors.dart';
+import 'add_task_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -26,22 +26,22 @@ class _HomePageSate extends State<HomePage> {
           elevation: 10,
           actions: [
             Padding(
-              padding: const EdgeInsets.only(right:10.0),
+              padding: const EdgeInsets.only(right: 10.0),
               child: Stack(
                 alignment: Alignment.center,
                 children: [
                   const Icon(
                     Icons.calendar_today_outlined,
-                    size: 50.0,
+                    size: 35.0,
                     color: Colors.white,
                   ),
                   Center(
                     child: Padding(
-                      padding: const EdgeInsets.only(top: 12.0),
+                      padding: const EdgeInsets.only(top: 10.0),
                       child: Text(
                         dayNum.toString(),
                         style: const TextStyle(
-                          fontSize: 20.0,
+                          fontSize: 12.0,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
@@ -52,7 +52,6 @@ class _HomePageSate extends State<HomePage> {
               ),
             ),
           ],
-          
           centerTitle: false,
           title: const Text(
             "TODO APP",
@@ -89,6 +88,20 @@ class _HomePageSate extends State<HomePage> {
           children: [
             const SizedBox(
               height: 20,
+            ),
+            Align(
+              alignment: Alignment.centerRight,
+              child: InkWell(
+                onTap: () {},
+                child:const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  child: Text(
+                    "Refresh",
+                    style: TextStyle(
+                        color: primaryColor, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
             ),
             TaskDisplay(
                 props: Props(
