@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:stellar_eminence/components/displays/task_display.dart';
 import 'package:stellar_eminence/pages/add_task_page.dart';
 
 import '../components/navigation/bottom_navbar.dart';
@@ -22,59 +23,57 @@ class _HomePageSate extends State<HomePage> {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: primaryColor,
+          elevation: 10,
           actions: [
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                const Icon(
-                  Icons.calendar_today_outlined,
-                  size: 50.0,
-                  color: Colors.white,
-                ),
-                Center(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 12.0),
-                    child: Text(
-                      dayNum.toString(),
-                      style: const TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
+            Padding(
+              padding: const EdgeInsets.only(right:10.0),
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  const Icon(
+                    Icons.calendar_today_outlined,
+                    size: 50.0,
+                    color: Colors.white,
+                  ),
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 12.0),
+                      child: Text(
+                        dayNum.toString(),
+                        style: const TextStyle(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
-          leading: const Padding(
-              padding: EdgeInsets.only(left: 10.0),
-              child: Row(
-                children: [
-                  Text(
-                    "TODO APP",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20.0,
-                    ),
-                  ),
-                ],
-              )),
+          
+          centerTitle: false,
+          title: const Text(
+            "TODO APP",
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold),
+          ),
         ),
         backgroundColor: secondaryColor,
         floatingActionButton: FloatingActionButton(
-
           onPressed: () {
-
             Get.to(() => const NewTaskPage());
           },
           backgroundColor: primaryColor,
+          shape: const CircleBorder(),
+          elevation: 4.0,
           child: const Icon(
             Icons.add,
             color: whiteColor,
           ),
-          shape: const CircleBorder(),
-           elevation: 4.0, 
         ),
         bottomNavigationBar: CustomBottomNavigationBar(
           currentIndex: _currentIndex,
@@ -84,7 +83,20 @@ class _HomePageSate extends State<HomePage> {
             });
           },
         ),
-        body: SingleChildScrollView(child: Column()),
+        body: SingleChildScrollView(
+            child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(
+              height: 20,
+            ),
+            TaskDisplay(
+                props: Props(
+                    content: "TODO CONTENT",
+                    title: "TODO TITLE",
+                    isComplete: false))
+          ],
+        )),
       ),
     );
   }
