@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:stellar_eminence/pages/add_task_page.dart';
 
+import '../components/navigation/bottom_navbar.dart';
 import '../utils/colors.dart';
 
 class HomePage extends StatefulWidget {
@@ -9,6 +12,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageSate extends State<HomePage> {
+  int _currentIndex = 0;
   @override
   Widget build(BuildContext context) {
     int dayNum = (DateTime.now().day);
@@ -29,8 +33,7 @@ class _HomePageSate extends State<HomePage> {
                 ),
                 Center(
                   child: Padding(
-                    padding: const EdgeInsets.only(
-                        top: 12.0), 
+                    padding: const EdgeInsets.only(top: 12.0),
                     child: Text(
                       dayNum.toString(),
                       style: const TextStyle(
@@ -60,10 +63,26 @@ class _HomePageSate extends State<HomePage> {
         ),
         backgroundColor: secondaryColor,
         floatingActionButton: FloatingActionButton(
-          onPressed: () => {},
-          tooltip: 'Increment',
+
+          onPressed: () {
+
+            Get.to(() => const NewTaskPage());
+          },
           backgroundColor: primaryColor,
-          child: const Icon(Icons.add),
+          child: const Icon(
+            Icons.add,
+            color: whiteColor,
+          ),
+          shape: const CircleBorder(),
+           elevation: 4.0, 
+        ),
+        bottomNavigationBar: CustomBottomNavigationBar(
+          currentIndex: _currentIndex,
+          onTap: (index) {
+            setState(() {
+              _currentIndex = index;
+            });
+          },
         ),
         body: SingleChildScrollView(child: Column()),
       ),
