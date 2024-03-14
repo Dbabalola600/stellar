@@ -53,7 +53,10 @@ class _HomePageSate extends State<HomePage> {
     setState(() {
       _isLoading = true;
     });
+
+    await connect();
     var response = await getAll();
+
 
     if (response != null) {
       // ignore: avoid_print
